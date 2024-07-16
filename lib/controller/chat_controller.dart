@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import '../model/chat_message.dart';
 
-const String apiKey = "AofdWcZrM5tpsjpz4HXU3M";
-
 class ChatController extends GetxController {
   late final GenerativeModel _model;
   late ChatSession _chat;
+  final String _apikey = dotenv.env["API_KEY"]!;
 
   final ScrollController scrollController = ScrollController();
   final TextEditingController textController = TextEditingController();
@@ -19,8 +19,7 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _model = GenerativeModel(
-        model: 'gemini-1.5-flash', apiKey: '${apiKey}AIzaSyAJ6ZeC4Z7KF');
+    _model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: _apikey);
 
     // Load sessions from local storage
     sessions.value = storage.read<List>('sessions')?.cast<String>() ?? [];
